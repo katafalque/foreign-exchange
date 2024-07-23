@@ -11,7 +11,7 @@
 	<groupId>com.example</groupId>
 	<artifactId>foreignexchange</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>foreignexchange</name>
+	<name>foreign exchange</name>
 	<description>simple app to get exchange rates</description>
 	<url/>
 	<licenses>
@@ -44,6 +44,11 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-beans</artifactId>
+			<version>6.1.11</version>
 		</dependency>
 	</dependencies>
 
