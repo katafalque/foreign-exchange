@@ -38,6 +38,8 @@
 		<sonar.tests>src/test/java</sonar.tests>
 		<sonar.host.url>https://sonarcloud.io</sonar.host.url>
 		<sonar.java.binaries>target/classes</sonar.java.binaries>
+		<maven.compiler.source>22</maven.compiler.source>
+		<maven.compiler.target>22</maven.compiler.target>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -100,6 +102,11 @@
 			<id>coverage</id>
 			<build>
 				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-compiler-plugin</artifactId>
+						<version>3.13.0</version>
+					</plugin>
 					<plugin>
 						<groupId>org.jacoco</groupId>
 						<artifactId>jacoco-maven-plugin</artifactId>
