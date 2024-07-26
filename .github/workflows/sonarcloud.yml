@@ -21,7 +21,6 @@ jobs:
 
       - name: Sonar Analyze
         run: mvn verify sonar:sonar -Pcoverage
-        projectBaseDir: .
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
