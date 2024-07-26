@@ -29,4 +29,5 @@ jobs:
           args:
             -Dsonar.projectKey=katafalque_foreign-exchange
             -Dsonar.organization=katafalque
+            -Dsonar.coverage.jacoco.xmlReportPaths=${project.build.directory}/site/jacoco/jacoco.xml
           projectBaseDir: .
