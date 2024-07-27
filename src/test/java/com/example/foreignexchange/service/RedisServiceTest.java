@@ -31,7 +31,7 @@ class RedisServiceTest {
     @BeforeEach
     public void setUp() {
         MockitoAnnotations.openMocks(this);
-        faker = new Faker(); // Initialize Faker
+        faker = new Faker();
     }
 
     @Test
