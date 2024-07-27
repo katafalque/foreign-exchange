@@ -1,6 +1,5 @@
 package com.example.foreignexchange.provider.exchangerate;
 
-import com.example.foreignexchange.model.response.ExchangeRateApiResponseType;
 import com.example.foreignexchange.model.response.FrankfurterResponseType;
 import com.example.foreignexchange.service.ExchangeRateService;
 import com.github.javafaker.Faker;
@@ -10,7 +9,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.web.util.UriComponentsBuilder;
 
