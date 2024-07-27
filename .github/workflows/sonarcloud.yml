@@ -32,6 +32,12 @@ jobs:
       - name: Build and Test with Maven
         run: mvn clean verify
 
+      - name: Sonar Analyze
+        run: mvn verify sonar:sonar -Pcoverage
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+
       - name: SonarCloud Analysis
         run: mvn sonar:sonar -Dsonar.login=${{ secrets.SONAR_TOKEN }} -Dsonar.java.coveragePlugin=jacoco -Dsonar.coverage.jacoco.xmlReportPaths=target/site/jacoco/jacoco.xml
         env:
