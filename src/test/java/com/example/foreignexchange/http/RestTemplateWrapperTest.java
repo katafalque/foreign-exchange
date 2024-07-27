@@ -18,13 +18,13 @@ import static org.mockito.Mockito.when;
 @ExtendWith(MockitoExtension.class)
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-class RestTemplateWrapperImplTest {
+class RestTemplateWrapperTest {
     @Mock
     private RestTemplate restTemplate;
 
     private final RestTemplateWrapperImpl restTemplateWrapper;
 
-    public RestTemplateWrapperImplTest() {
+    public RestTemplateWrapperTest() {
         MockitoAnnotations.openMocks(this);
         restTemplateWrapper = new RestTemplateWrapperImpl();
     }
