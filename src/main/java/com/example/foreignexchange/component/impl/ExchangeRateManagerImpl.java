@@ -28,6 +28,12 @@ public class ExchangeRateManagerImpl implements ExchangeRateManager {
         return provider.getExchangeRate(fromCurrency, toCurrency);
     }
 
+    @Override
+    public double convertCurrency(double amount, String fromCurrency, String toCurrency) {
+        double rate = this.getExchangeRate(fromCurrency, toCurrency);
+        return amount * rate;
+    }
+
     private BaseExchangeRateProvider getProvider(){
         ExchangeRateProvider exchangeRateProviderEnum = ExchangeRateProvider.fromValue(exchangeRateProvider);
         return exchangeRateProviderFactory.getService(exchangeRateProviderEnum);
