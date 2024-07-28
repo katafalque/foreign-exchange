@@ -6,6 +6,7 @@ import com.example.foreignexchange.provider.exchangerate.BaseExchangeRateProvide
 import com.example.foreignexchange.service.factory.ExchangeRateProviderFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -21,6 +22,7 @@ public class ExchangeRateManagerImpl implements ExchangeRateManager {
     }
 
     @Override
+    @Cacheable(value = "exchangeRates", key = "{#fromCurrency, #toCurrency}")
     public double getExchangeRate(String fromCurrency, String toCurrency) {
         BaseExchangeRateProvider provider = getProvider();
         return provider.getExchangeRate(fromCurrency, toCurrency);
