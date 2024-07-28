@@ -29,6 +29,7 @@ public class ExchangeRateManagerImpl implements ExchangeRateManager {
     }
 
     @Override
+    @Cacheable(value = "exchangeRates", key = "{#amount, #fromCurrency, #toCurrency}")
     public double convertCurrency(double amount, String fromCurrency, String toCurrency) {
         double rate = this.getExchangeRate(fromCurrency, toCurrency);
         return amount * rate;

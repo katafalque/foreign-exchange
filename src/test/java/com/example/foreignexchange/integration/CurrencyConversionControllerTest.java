@@ -1,5 +1,6 @@
 package com.example.foreignexchange.integration;
 
+import com.example.foreignexchange.model.response.CurrencyConversionResponseModel;
 import com.example.foreignexchange.model.response.ErrorResponse;
 import com.example.foreignexchange.model.response.FrankfurterResponseType;
 import com.example.foreignexchange.model.response.GetExchangeRateResponseModel;
@@ -15,8 +16,8 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.web.client.HttpClientErrorException;
 
 import java.nio.charset.Charset;
@@ -31,7 +32,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 @AutoConfigureMockMvc
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-class ExchangeRateControllerTest {
+class CurrencyConversionControllerTest {
     private static Faker faker;
     @MockBean
     private ExchangeRateService exchangeRateService;
@@ -46,19 +47,21 @@ class ExchangeRateControllerTest {
     }
 
     @SneakyThrows
-    private ResultActions sendMockRequest(String fromCurrency, String toCurrency) {
-        return mockMvc.perform(get("/exchange-rate")
+    private ResultActions sendMockRequest(String amount, String fromCurrency, String toCurrency) {
+        return mockMvc.perform(get("/currency-conversion")
+                .param("amount", amount)
                 .param("fromCurrency", fromCurrency)
                 .param("toCurrency", toCurrency)
                 .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON));
     }
 
     @Test
-    void should_return_ok_and_exchange_rate() throws Exception {
+    void should_return_ok_and_conversion() throws Exception {
         //Arrange
         String fromCurrency = faker.currency().code();
         String toCurrency = faker.currency().code();
         double rate = faker.number().randomDouble(2, 10, 100);
+        double amount = faker.number().randomDouble(0, 100, 1000);
 
         var rateMap = new HashMap<String, Double>();
         rateMap.put(toCurrency, rate);
@@ -68,15 +71,15 @@ class ExchangeRateControllerTest {
                 .date(faker.date().toString())
                 .build();
 
-        var expected = GetExchangeRateResponseModel.builder()
-                .exchangeRate(rate)
+        var expected = CurrencyConversionResponseModel.builder()
+                .conversionResult(rate * amount)
                 .conversionType(fromCurrency + toCurrency)
                 .build();
 
         when(exchangeRateService.getExchangeRate(any(), any())).thenReturn(mockResponse);
 
         // Act & Assert
-        var response = sendMockRequest(fromCurrency, toCurrency).andReturn().getResponse();
+        var response = sendMockRequest(String.valueOf(amount), fromCurrency, toCurrency).andReturn().getResponse();
 
 
         assertEquals(objectMapper.writeValueAsString(expected), response.getContentAsString());
@@ -90,6 +93,7 @@ class ExchangeRateControllerTest {
         String toCurrency = faker.currency().code();
         String message = faker.lorem().word();
         String exceptionMessage = "{\"message\":" + " \"" + message + "\""+ "}";
+        double amount = faker.number().randomDouble(0, 100, 1000);
 
         var expected = ErrorResponse.builder()
                 .message(message)
@@ -105,7 +109,7 @@ class ExchangeRateControllerTest {
                 );
 
         // Act & Assert
-        var response = sendMockRequest(fromCurrency, toCurrency).andReturn().getResponse();
+        var response = sendMockRequest(String.valueOf(amount), fromCurrency, toCurrency).andReturn().getResponse();
 
 
         assertEquals(objectMapper.writeValueAsString(expected), response.getContentAsString());
@@ -118,6 +122,7 @@ class ExchangeRateControllerTest {
         String fromCurrency = faker.currency().code();
         String toCurrency = faker.currency().code();
         String message = faker.lorem().word();
+        double amount = faker.number().randomDouble(0, 100, 1000);
 
         var expected = ErrorResponse.builder()
                 .message(message)
@@ -128,7 +133,7 @@ class ExchangeRateControllerTest {
                 .thenThrow(new RuntimeException(message));
 
         // Act & Assert
-        var response = sendMockRequest(fromCurrency, toCurrency).andReturn().getResponse();
+        var response = sendMockRequest(String.valueOf(amount), fromCurrency, toCurrency).andReturn().getResponse();
 
 
         assertEquals(objectMapper.writeValueAsString(expected), response.getContentAsString());
