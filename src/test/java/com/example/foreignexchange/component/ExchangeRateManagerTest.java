@@ -85,4 +85,52 @@ class ExchangeRateManagerTest {
         assertEquals(expectedRate, actualRate);
     }
 
+    @Test
+    void should_convert_currency_frankfurter() {
+        // Arrange
+        String fromCurrency = faker.currency().code();
+        String toCurrency = faker.currency().code();
+        double expectedRate = faker.number().randomDouble(2,10,100);
+        double amount = faker.number().randomDouble(0, 100, 1000);
+        double expectedConversion = amount * expectedRate;
+
+        // Act
+
+        ReflectionTestUtils.setField(exchangeRateManager, "exchangeRateProvider", "ExchangeRateProviderFrankfurter");
+        when(exchangeRateProviderFactory.getService(ExchangeRateProvider.frankfurter))
+                .thenReturn(mockExchangeRateProvider);
+        when(mockExchangeRateProvider.getExchangeRate(fromCurrency, toCurrency))
+                .thenReturn(expectedRate);
+
+
+        double conversion = exchangeRateManager.convertCurrency(amount, fromCurrency, toCurrency);
+
+        // Assert
+        assertEquals(expectedConversion, conversion);
+    }
+
+    @Test
+    void should_convert_currency_exchange_rate_api() {
+        // Arrange
+        String fromCurrency = faker.currency().code();
+        String toCurrency = faker.currency().code();
+        double expectedRate = faker.number().randomDouble(2,10,100);
+        double amount = faker.number().randomDouble(0, 100, 1000);
+        double expectedConversion = amount * expectedRate;
+
+        // Act
+
+        ReflectionTestUtils.setField(exchangeRateManager, "exchangeRateProvider", "ExchangeRateProviderExchangeRateApi");
+        when(exchangeRateProviderFactory.getService(ExchangeRateProvider.exchangeRateApi))
+                .thenReturn(mockExchangeRateProvider);
+        when(mockExchangeRateProvider.getExchangeRate(fromCurrency, toCurrency))
+                .thenReturn(expectedRate);
+
+
+        double conversion = exchangeRateManager.convertCurrency(amount, fromCurrency, toCurrency);
+
+        // Assert
+        assertEquals(expectedConversion, conversion);
+    }
+
 }
