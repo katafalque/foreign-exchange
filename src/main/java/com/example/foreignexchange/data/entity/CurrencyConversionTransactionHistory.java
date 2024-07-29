@@ -19,12 +19,16 @@ public class CurrencyConversionTransactionHistory {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
 
+    @Column(name = "source")
     private String source;
 
+    @Column(name = "target")
     private String target;
 
+    @Column(name = "amount")
     private double amount;
 
+    @Column(name = "date")
     @Temporal(TemporalType.TIMESTAMP)
     private Date date;
 }
