@@ -53,9 +53,9 @@ public class CurrencyConversionController {
             return new ResponseEntity(currencyConversionResponseModel, HttpStatus.OK);
         } catch (HttpStatusCodeException e){
             ErrorResponse errorResponse = ErrorResponseParser.parseErrorResponse(e.getResponseBodyAsString());
-            return new ResponseEntity<ErrorResponse>(errorResponse, e.getStatusCode());
+            return new ResponseEntity<>(errorResponse, e.getStatusCode());
         } catch (Exception e){
-            return new ResponseEntity<ErrorResponse>(
+            return new ResponseEntity<>(
                     ErrorResponse.builder().message(e.getMessage()).result("server failed").build(),
                     HttpStatus.INTERNAL_SERVER_ERROR
             );

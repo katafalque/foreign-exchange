@@ -10,6 +10,5 @@ import java.util.UUID;
 public interface ConversionHistoryService {
     void saveConversionHistory(ConversionHistory conversionHistory);
     ConversionHistory getById(UUID id);
-    ConversionHistoryPageResponse<ConversionHistoryDto> getByFilter(ConversionHistoryRequestModel requestModel,
-                                                                    int page, int size);
+    ConversionHistoryPageResponse<ConversionHistoryDto> getByFilter(ConversionHistoryRequestModel requestModel);
 }

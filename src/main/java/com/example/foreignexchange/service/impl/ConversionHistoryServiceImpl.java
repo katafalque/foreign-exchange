@@ -39,11 +39,11 @@ public class ConversionHistoryServiceImpl implements ConversionHistoryService {
     }
 
     @Override
-    public ConversionHistoryPageResponse<ConversionHistoryDto> getByFilter(ConversionHistoryRequestModel requestModel, int page, int size) {
+    public ConversionHistoryPageResponse<ConversionHistoryDto> getByFilter(ConversionHistoryRequestModel requestModel) {
         Specification<ConversionHistory> spec =
                 ConversionHistorySpec.filterBy(requestModel);
         Page<ConversionHistory> result = this.conversionHistoryRepository
-                .findAll(spec, PageRequest.of(page, size));
+                .findAll(spec, PageRequest.of(requestModel.getPage(), requestModel.getSize()));
         return conversionHistoryMapper.toConversionHistoryPageResponse(result);
     }
 }

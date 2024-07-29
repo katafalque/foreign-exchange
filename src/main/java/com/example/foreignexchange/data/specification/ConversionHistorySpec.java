@@ -18,22 +18,16 @@ public class ConversionHistorySpec {
 
     public static Specification<ConversionHistory> filterBy(ConversionHistoryRequestModel requestModel) {
         return (Root<ConversionHistory> root, CriteriaQuery<?> query, CriteriaBuilder cb) -> {
-            // List to hold the predicates
+
             Predicate predicate = cb.conjunction();
 
-            // Add predicates based on the filter values
             if (requestModel.getId() != null) {
-                predicate = cb.and(predicate, cb.equal(root.get("id"), requestModel.getId().toString()));
+                predicate = cb.and(predicate, cb.equal(root.get("id"), requestModel.getId()));
             }
 
             if (requestModel.getDate() != null) {
                 predicate = cb.and(predicate, cb.equal(root.get("date"), requestModel.getDate()));
             }
-
-            if (requestModel.getSource() != null && !requestModel.getSource().isEmpty()) {
-                predicate = cb.and(predicate, cb.equal(root.get("source"), requestModel.getSource()));
-            }
-
 
             return predicate;
         };
