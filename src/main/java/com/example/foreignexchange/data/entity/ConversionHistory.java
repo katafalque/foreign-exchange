@@ -3,7 +3,7 @@ package com.example.foreignexchange.data.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.Date;
+import java.sql.Date;
 import java.util.UUID;
 
 @Getter
@@ -13,8 +13,8 @@ import java.util.UUID;
 @RequiredArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "currency_conversion_transactions")
-public class CurrencyConversionTransactionHistory {
+@Table(name = "conversion_history")
+public class ConversionHistory {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
@@ -29,6 +29,5 @@ public class CurrencyConversionTransactionHistory {
     private double amount;
 
     @Column(name = "date")
-    @Temporal(TemporalType.TIMESTAMP)
     private Date date;
 }
