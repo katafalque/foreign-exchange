@@ -10,6 +10,7 @@ public class ConversionHistoryRequestValidator implements ConstraintValidator<Va
         if (requestModel == null)
             return false;
 
-        return requestModel.getId() != null || requestModel.getDate() != null;
+        return (requestModel.getId() != null || requestModel.getDate() != null) &&
+                requestModel.getPage() >= 0 && requestModel.getSize() > 0;
     }
 }
