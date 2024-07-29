@@ -1,7 +1,6 @@
 package com.example.foreignexchange.data.specification;
 
 import com.example.foreignexchange.data.entity.ConversionHistory;
-import com.example.foreignexchange.data.filter.ConversionHistoryFilter;
 import com.example.foreignexchange.model.request.ConversionHistoryRequestModel;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
@@ -9,8 +8,6 @@ import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
 import org.springframework.data.jpa.domain.Specification;
 
-import java.util.Date;
-import java.util.UUID;
 
 public class ConversionHistorySpec {
     public static final String ID = "id";
