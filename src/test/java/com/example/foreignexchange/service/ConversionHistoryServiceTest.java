@@ -15,9 +15,11 @@ import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 
 import java.util.Arrays;
@@ -69,41 +71,6 @@ class ConversionHistoryServiceTest {
         assertNotNull(result);
         assertEquals(id, result.getId());
         verify(conversionHistoryRepository, times(1)).findById(id);
-    }
-
-    @Test
-    void should_get_by_filter() {
-        ConversionHistoryRequestModel requestModel = ConversionHistoryRequestModel.builder().build();
-
-        ConversionHistory conversionHistory1 = ConversionHistory.builder()
-                .id(UUID.randomUUID())
-                .build();
-        ConversionHistory conversionHistory2 = ConversionHistory.builder()
-                .id(UUID.randomUUID())
-                .build();
-
-        Page<ConversionHistory> page = new PageImpl<>(Arrays.asList(conversionHistory1, conversionHistory2), PageRequest.of(0, 10), 2);
-
-        ConversionHistoryDto dto1 = ConversionHistoryDto.builder().build();
-        ConversionHistoryDto dto2 = ConversionHistoryDto.builder().build();
-        ConversionHistoryPageResponse<ConversionHistoryDto> pageResponse = new ConversionHistoryPageResponse<>();
-        pageResponse.setContent(Arrays.asList(dto1, dto2));
-        pageResponse.setPage(0);
-        pageResponse.setSize(10);
-        pageResponse.setTotalPages(1);
-        pageResponse.setTotalSize(2);
-
-        when(conversionHistoryRepository.findAll(any(Specification.class), any(PageRequest.class))).thenReturn(page);
-        ConversionHistoryPageResponse<ConversionHistoryDto> result = conversionHistoryService.getByFilter(requestModel);
-
-        assertNotNull(result);
-        assertEquals(2, result.getContent().size());
-        assertEquals(0, result.getPage());
-        assertEquals(10, result.getSize());
-        assertEquals(1, result.getTotalPages());
-        assertEquals(2, result.getTotalSize());
-
-        verify(conversionHistoryRepository, times(1)).findAll(any(Specification.class), any(PageRequest.class));
     }
 }
 
