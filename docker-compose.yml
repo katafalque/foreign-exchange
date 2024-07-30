@@ -1,0 +1,29 @@
+version: '3.8'
+
+services:
+  redis-service:
+    image: 'redis'
+    ports:
+      - "6379:6379"
+    networks:
+      - app-network
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+
+    ports:
+      - "8080:8080"
+    environment:
+      - SPRING_PROFILES_ACTIVE=dev
+      - SPRING_DATA_REDIS_HOST=redis-service
+      - SPRING_DATA_REDIS_PORT=6379
+      - PROVIDER_EXCHANGE_RATE_API_BASE_URL=https://v6.exchangerate-api.com/v6/
+      - PROVIDER_EXCHANGE_RATE_API_API_KEY=d55ff7cbe0b60ed0535b22b5
+      - PROVIDER_FRANKFURTER_BASE_URL=https://api.frankfurter.app/latest
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
