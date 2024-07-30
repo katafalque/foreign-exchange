@@ -3,9 +3,8 @@
 
 # Table of contents
 1. [Introduction](#introduction)
-2. [Which Fine-Tuning Method?](#which-method)
-3. [Used Technologies](#technologies)
-4. [Getting Started - Running Docker](#docker)
+2. [Used Technologies](#technologies)
+3. [Getting Started - Running Docker](#docker)
 
 <!-- ABOUT THE PROJECT -->
 ## Introduction <a name="introduction"></a>
@@ -108,12 +107,6 @@ The development of this foreign exchange application is significant for several 
 
 
 ![sample_image](sample_images/swagger-sample.png "API Documentation")
-
-## Which method? <a name="which-method"></a>
-### Prefered Method
-
-### How it works?
-
 
 <p align="right">(<a href="#readme-top">Back to Top</a>)</p>
 
@@ -236,25 +229,117 @@ Benefits of using Redis:
 ## Getting Started - Running Docker <a name="docker"></a>
 To run the Docker container, use the following commands.
 
-### Update env variables
-To change the variables, please run the following command:
   ```sh
-  pip install -r requirements.txt
+  docker-compose up --build
   ```
 
-There are default env variables if you do not want to change env variables.
+Now, application is running without any adjustments.
+But, of course, there are some things you may want to change.
 
-### Compose
-In a terminal, type:
-  ```sh
-  streamlit run main.py
-  ```
+Application uses 2 different external currency exchange services.
 
-### Run
-In a terminal, type:
-  ```sh
-  streamlit run main.py
-  ```
+### Frankfurter
+[Docs](https://www.frankfurter.app/docs/)
+
+* Frankfurter is an open-source API for current and historical foreign exchange rates published by the European Central Bank.
+
+* Free to use, no limitations
+
+* Application uses as default exchange rate provider service
+
+### ExchangeRate-Api
+[Docs](https://www.exchangerate-api.com/docs/overview)
+
+* A paid exchange rate provider service with a limited free plan that's being used by application
+
+* In free plan, only 1500 request for month is allowed
+
+* Can be used in application by changing ```exchange.rate.provider``` variable to ```ExchangeRateProviderExchangeRateApi``` in ```application properties```.
+
+## Endpoints
+
+### /exchange-rate
+
+* a get request to get exchange rate based on the fromCurrency and toCurrency query parameters which represent currency codes
+
+* sample request is 
+```http://localhost:8080/exchange-rate?fromCurrency=USD&toCurrency=TRY```
+
+* sample response is 
+``` 
+{
+    "conversion_type": "USDTRY",
+    "exchange_rate": 32.963
+}
+```
+
+### /currency-conversion
+
+* a get request to convert some amount of base currency to target currency, by using currency codes in query parameters
+
+* sample request is
+  ```http://localhost:8080/exchange-rate?fromCurrency=USD&toCurrency=TRY```
+
+* sample response is
+``` 
+{
+    "conversion_type": "USDTRY",
+    "conversion_result": 164815.0
+}
+```
+
+### /conversion-history
+
+* a post request to get history of conversion transactions made while running the application
+* transaction history is lost when application shut down since it's being held in memory database
+
+* request url
+  ```http://localhost:8080/conversion-history```
+
+* sample request
+``` 
+{
+    "id": "fd3e7e38-3b32-428b-8671-3220dff5cd5a",
+    "date": "2024-07-30",
+    "page": 0,
+    "size": 10
+}
+```
+
+* request can be made by only id or date or both
+* providing none will result in a bad request response
+
+* sample response
+``` 
+{
+    {
+    "content": [
+        {
+            "id": "186c6db1-56bc-4f41-a3be-c28482573045",
+            "source": "USD",
+            "target": "TRY",
+            "amount": 5000.0,
+            "date": "2024-07-30"
+        }
+    ],
+    "size": 10,
+    "totalSize": 1,
+    "page": 0,
+    "totalPages": 1
+  }
+}
+```
+
+* in response, content is paginated. page size and page number can be change in request by changing variables page and size
+* if size is less than one or page is less then zero, application will respond with a bad request response
+
+## How to obtain transaction id
+
+* did not want to expose ids publicly, however, made the in memory database accessible since it only has demonstration purpose.
+
+* transaction ids can be seen by going to ```http://localhost:8080/h2-console/login.jsp```
+
+* the database url is ```jdbc:h2:mem:testdb``` and the password is ```password```
 
 
 <p align="right">(<a href="#readme-top">Back to Top</a>)</p>
