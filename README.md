@@ -341,5 +341,11 @@ Application uses 2 different external currency exchange services.
 
 * the database url is ```jdbc:h2:mem:testdb``` and the password is ```password```
 
+## Tests and Coverage
+
+* all unit and integration tests runs can bee seen on the actions
+
+* pull requests holds the sonar reports and coverage information
+
 
 <p align="right">(<a href="#readme-top">Back to Top</a>)</p>
