@@ -31,6 +31,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.doThrow;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -71,7 +72,7 @@ class ConversionHistoryControllerTest {
 
     @SneakyThrows
     private ResultActions sendMockRequest(ConversionHistoryRequestModel requestModel) {
-        return mockMvc.perform(get("/conversion-history")
+        return mockMvc.perform(post("/conversion-history")
                         .content(objectMapper.writeValueAsString(requestModel))
                 .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON));
     }
